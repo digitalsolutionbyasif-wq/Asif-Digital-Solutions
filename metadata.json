@@ -1,0 +1,6 @@
+{
+  "name": "Asif Digital Solutions",
+  "description": "Digital agency, career academy, and enterprise growth platform in Pakistan — web design, e-commerce, SEO, Python, AI content, and FYP mentoring.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

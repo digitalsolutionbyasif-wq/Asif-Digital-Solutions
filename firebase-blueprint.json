@@ -1,0 +1,234 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Private authenticated client workspace profile synchronized from Google Sign-In.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "displayName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "minLength": 3,
+          "maxLength": 160
+        },
+        "photoURL": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "role": {
+          "type": "string",
+          "enum": ["client"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["uid", "displayName", "email", "role", "createdAt", "updatedAt"]
+    },
+    "ClientProjectBrief": {
+      "title": "ClientProjectBrief",
+      "description": "AI-generated or user-authored project scope brief saved in a client's private workspace.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 140
+        },
+        "serviceTrack": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 80
+        },
+        "budgetEstimate": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 60
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1500
+        },
+        "aiSummary": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 3000
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Draft", "Submitted", "Archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "title",
+        "serviceTrack",
+        "budgetEstimate",
+        "aiSummary",
+        "status",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "VoiceSessionLog": {
+      "title": "VoiceSessionLog",
+      "description": "Summary transcript from a real-time Gemini Live voice consultation.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["Agency Scoping", "Academy Advisor", "FYP Architecture"]
+        },
+        "voiceName": {
+          "type": "string",
+          "enum": ["Zephyr", "Kore", "Puck", "Fenrir", "Charon"]
+        },
+        "userTranscript": {
+          "type": "string",
+          "maxLength": 3000
+        },
+        "assistantTranscript": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "mode",
+        "voiceName",
+        "userTranscript",
+        "assistantTranscript",
+        "createdAt"
+      ]
+    },
+    "CreativeAssetLog": {
+      "title": "CreativeAssetLog",
+      "description": "Prompt and generation configuration log for the Brand Visual Studio.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 800
+        },
+        "aspectRatio": {
+          "type": "string",
+          "enum": ["1:1", "4:3", "3:4", "16:9", "9:16"]
+        },
+        "imageSize": {
+          "type": "string",
+          "enum": ["1K", "2K", "4K"]
+        },
+        "operation": {
+          "type": "string",
+          "enum": ["generate", "edit"]
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "prompt",
+        "aspectRatio",
+        "imageSize",
+        "operation",
+        "createdAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Private user profile keyed by Firebase Auth UID."
+    },
+    "/users/{userId}/briefs/{briefId}": {
+      "schema": {
+        "$ref": "#/entities/ClientProjectBrief"
+      },
+      "description": "Saved AI strategy briefs owned by the authenticated user."
+    },
+    "/users/{userId}/voiceSessions/{sessionId}": {
+      "schema": {
+        "$ref": "#/entities/VoiceSessionLog"
+      },
+      "description": "Saved Gemini Live voice consultation transcripts owned by the user."
+    },
+    "/users/{userId}/assets/{assetId}": {
+      "schema": {
+        "$ref": "#/entities/CreativeAssetLog"
+      },
+      "description": "Saved Creative Asset Studio prompt history owned by the user."
+    }
+  }
+}
